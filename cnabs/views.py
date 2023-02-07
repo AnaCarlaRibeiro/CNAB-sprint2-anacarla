@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import UploadFileForm
 from django.http import HttpResponse
 from .models import ArquivoModel
+from collections import defaultdict
 
 from django.core.files.storage import FileSystemStorage
 import ipdb
@@ -51,25 +52,41 @@ def upload(request):
 
 def tabela_dados(request):
     dados_tratados = []
+    total_por_nome = defaultdict(int)
+    
     arquivos = ArquivoModel.objects.all()
     for arquivo in arquivos:
         if arquivo.tipo == "1":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "debito", 'natureza': "saida", 'sinal': "-"})
+            dados_tratados.append({'valor':arquivo.valor/100, 'tipo': arquivo.tipo, 'descricao': "debito", 'natureza': "saida", 'sinal': "-", 'dono_da_loja': arquivo.dono_da_loja}) 
+            total_por_nome[arquivo.dono_da_loja] -= arquivo.valor/100          
         elif arquivo.tipo == "2":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "boleto", 'natureza': "saída", 'sinal': "-"})
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "boleto", 'natureza': "saída", 'sinal': "-", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] -= arquivo.valor/100   
         elif arquivo.tipo == "3":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "financiamento", 'natureza': "saída", 'sinal': "-"})    
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "financiamento", 'natureza': "saída", 'sinal': "-", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] -= arquivo.valor/100       
         elif arquivo.tipo == "4":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "credito", 'natureza': "entrada", 'sinal': "+"})
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "credito", 'natureza': "entrada", 'sinal': "+", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] += arquivo.valor/100   
         elif arquivo.tipo == "5":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "recebimento emprestimo", 'natureza': "entrada", 'sinal': "+"})
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "recebimento emprestimo", 'natureza': "entrada", 'sinal': "+", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] += arquivo.valor/100   
         elif arquivo.tipo == "6":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "vendas", 'natureza': "entrada", 'sinal': "+"})
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "vendas", 'natureza': "entrada", 'sinal': "+", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] += arquivo.valor/100   
         elif arquivo.tipo == "7":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "recebimento TED", 'natureza': "entrada", 'sinal': "+"})  
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "recebimento TED", 'natureza': "entrada", 'sinal': "+", 'dono_da_loja': arquivo.dono_da_loja}) 
+            total_por_nome[arquivo.dono_da_loja] += arquivo.valor/100    
         elif arquivo.tipo == "8":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "recebimento DOC", 'natureza': "entrada", 'sinal': "+"})    
+            dados_tratados.append({'valor':arquivo.valor/100,'tipo': arquivo.tipo, 'descricao': "recebimento DOC", 'natureza': "entrada", 'sinal': "+", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] += arquivo.valor/100       
         elif arquivo.tipo == "9":
-            dados_tratados.append({'tipo': arquivo.tipo, 'descricao': "aluguel", 'natureza': "saída", 'sinal': "-"})              
-    context = {'dados': dados_tratados}
+            dados_tratados.append({'valor':arquivo.valor/100, 'tipo': arquivo.tipo, 'descricao': "aluguel", 'natureza': "saída", 'sinal': "-", 'dono_da_loja': arquivo.dono_da_loja})
+            total_por_nome[arquivo.dono_da_loja] -= arquivo.valor/100   
+         
+    context = {'dados': dados_tratados, 'total_por_nome':total_por_nome}
     return render(request, 'cnabs/tabela_dados.html', context)
+
+
+
+

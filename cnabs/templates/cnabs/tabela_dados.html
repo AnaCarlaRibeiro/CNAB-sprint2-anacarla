@@ -1,103 +1,43 @@
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     
     <title>Cnabs</title>
 </head>
 <body>
-    <table style="width:20%">
+    <table style="width:50%">
       <thead>
         <tr>
+          <th>Dono da Loja</th>
           <th>Tipo</th>
           <th>Descrição</th>
           <th>Natureza</th>
           <th>Sinal</th>
-          
+          <th>valor</th>  
+     
+
+         
         </tr>
       </thead>
       <tbody>
         {% for dado in dados %}
         <tr>
+          <td>{{ dado.dono_da_loja }}</td>
           <td>{{ dado.tipo }}</td>
           <td>{{ dado.descricao }}</td>
           <td>{{ dado.natureza }}</td>
           <td>{{ dado.sinal }}</td>
-            
+          <td>{{ dado.valor }}</td>
+
           
-        {% comment %} </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
+          
           
         </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr>
-        <tr>
-          <td>{{ dado.tipo }}</td>
-          <td>{{ dado.descricao }}</td>
-          <td>{{ dado.natureza }}</td>
-          <td>{{ dado.sinal }}</td>
-            
-            
-          
-        </tr> {% endcomment %}
         {% endfor %}
-      </tbody>
-      </table>
+      </tbody> 
+      
+    </table>
+    <p>Total: {{ total_por_nome }}</p>
+
 </body>
 </html>

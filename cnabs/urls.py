@@ -20,5 +20,7 @@ from . import views
 urlpatterns = [  
   path("", views.upload),
   path("tabela_dados/", views.tabela_dados),
+#   path("valores_dados/", views.valores_dados),
+  
   
 ]
