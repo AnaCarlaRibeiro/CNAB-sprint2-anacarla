@@ -56,6 +56,7 @@ def tabela_dados(request):
     
     arquivos = ArquivoModel.objects.all()
     for arquivo in arquivos:
+    
         if arquivo.tipo == "1":
             dados_tratados.append({'valor':arquivo.valor/100, 'tipo': arquivo.tipo, 'descricao': "debito", 'natureza': "saida", 'sinal': "-", 'dono_da_loja': arquivo.dono_da_loja}) 
             total_por_nome[arquivo.dono_da_loja] -= arquivo.valor/100          
